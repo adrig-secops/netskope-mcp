@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "netskope": {
+      "command": "/Users/adrian/netskope-mcp/.venv/bin/python3",
+      "args": ["/Users/adrian/netskope-mcp/server.py"]
+    }
+  }
+}
