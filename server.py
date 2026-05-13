@@ -1,3 +1,4 @@
+import itertools
 import os
 from pathlib import Path
 from typing import Any
@@ -31,6 +32,11 @@ def _dump(obj: Any) -> Any:
     if hasattr(obj, "__iter__") and not isinstance(obj, (str, bytes, dict)):
         return [_dump(item) for item in obj]
     return obj
+
+
+def _page(paginator: Any, n: int) -> list:
+    """Consume at most n items from a paginator and dump them."""
+    return _dump(itertools.islice(paginator, n))
 
 
 # ---------------------------------------------------------------------------
@@ -72,7 +78,7 @@ def list_alerts(
             descending=descending,
             page_size=page_size,
         )
-        return _dump(results)
+        return _page(results, page_size)
 
 
 @mcp.tool()
@@ -128,7 +134,7 @@ def list_events(
             descending=descending,
             page_size=page_size,
         )
-        return _dump(results)
+        return _page(results, page_size)
 
 
 # ---------------------------------------------------------------------------
@@ -161,7 +167,7 @@ def list_incidents(
             end_time=end_time,
             page_size=page_size,
         )
-        return _dump(results)
+        return _page(results, page_size)
 
 
 @mcp.tool()
@@ -245,7 +251,7 @@ def list_url_lists(page_size: int = 100) -> list[dict]:
         page_size: Number of results per page (default 100).
     """
     with _client() as c:
-        return _dump(c.url_lists.list(page_size=page_size))
+        return _page(c.url_lists.list(page_size=page_size), page_size)
 
 
 @mcp.tool()
@@ -326,7 +332,7 @@ def list_publishers(page_size: int = 100) -> list[dict]:
         page_size: Number of results per page (default 100).
     """
     with _client() as c:
-        return _dump(c.publishers.list(page_size=page_size))
+        return _page(c.publishers.list(page_size=page_size), page_size)
 
 
 @mcp.tool()
@@ -399,7 +405,7 @@ def list_private_apps(
         page_size: Number of results per page (default 100).
     """
     with _client() as c:
-        return _dump(c.private_apps.list(filter_expr=filter_expr, fields=fields, page_size=page_size))
+        return _page(c.private_apps.list(filter_expr=filter_expr, fields=fields, page_size=page_size), page_size)
 
 
 @mcp.tool()
@@ -482,7 +488,7 @@ def list_scim_users(filter_expr: str | None = None, page_size: int = 100) -> lis
         page_size: Number of results per page (default 100).
     """
     with _client() as c:
-        return _dump(c.scim.users.list(filter_expr=filter_expr, page_size=page_size))
+        return _page(c.scim.users.list(filter_expr=filter_expr, page_size=page_size), page_size)
 
 
 @mcp.tool()
@@ -565,7 +571,7 @@ def list_scim_groups(filter_expr: str | None = None, page_size: int = 100) -> li
         page_size: Number of results per page (default 100).
     """
     with _client() as c:
-        return _dump(c.scim.groups.list(filter_expr=filter_expr, page_size=page_size))
+        return _page(c.scim.groups.list(filter_expr=filter_expr, page_size=page_size), page_size)
 
 
 @mcp.tool()
@@ -651,7 +657,7 @@ def list_pops(page_size: int = 100) -> list[dict]:
         page_size: Number of results per page (default 100).
     """
     with _client() as c:
-        return _dump(c.steering.list_pops(page_size=page_size))
+        return _page(c.steering.list_pops(page_size=page_size), page_size)
 
 
 @mcp.tool()
@@ -662,7 +668,7 @@ def list_tunnels(page_size: int = 100) -> list[dict]:
         page_size: Number of results per page (default 100).
     """
     with _client() as c:
-        return _dump(c.steering.list_tunnels(page_size=page_size))
+        return _page(c.steering.list_tunnels(page_size=page_size), page_size)
 
 
 @mcp.tool()
