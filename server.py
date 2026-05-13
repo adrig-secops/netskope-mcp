@@ -1,11 +1,12 @@
 import os
+from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
 from fastmcp import FastMCP
 from netskope import NetskopeClient
 
-load_dotenv()
+load_dotenv(Path(__file__).parent / ".env")
 
 mcp = FastMCP(
     name="Netskope MCP",
