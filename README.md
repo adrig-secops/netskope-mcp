@@ -26,7 +26,7 @@ A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that ex
 ## Installation
 
 ```bash
-git clone https://github.com/adrig-geek/netskope-mcp.git
+git clone https://github.com/adrig-secops/netskope-mcp.git
 cd netskope-mcp
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
@@ -64,7 +64,24 @@ Add the server to your project's `.mcp.json`:
 }
 ```
 
-Then open a Claude Code session in the project directory and ask naturally:
+## Usage with Claude Desktop
+
+Add the server to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
+
+```json
+{
+  "mcpServers": {
+    "netskope": {
+      "command": "/path/to/netskope-mcp/.venv/bin/python3",
+      "args": ["/path/to/netskope-mcp/server.py"]
+    }
+  }
+}
+```
+
+Then restart Claude Desktop. The Netskope tools will be available in any conversation.
+
+## Example queries
 
 - *"List my recent HIGH severity alerts"*
 - *"Show all SCIM users in the Engineering group"*
